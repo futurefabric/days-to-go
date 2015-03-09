@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Days to go&hellip;</title>
+   <meta charset='utf-8'>
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link href="assets/stylesheets/days-to-go.css" media="screen" rel="stylesheet" type="text/css">
+   <script type="text/javascript" src="assets/javascripts/moment.min.js"></script>
+   <script type="text/javascript" src="assets/javascripts/moment-range.min.js"></script>
+</head>
+
+<body>
+
+<div class="event_block">
+<h1 id="event_one_time_to_go"></h1>
+<p id="event_one_description"></p>
+</div>
+
+<div class="event_block">
+<h1 id="event_two_time_to_go"></h1>
+<p id="event_two_description"></p>
+</div>
+
+<script type="text/javascript">
+
+var time_to_event = function(event_date, time_container, description_container, description_string) {
+  var today         = new Date();
+  var end_date      = event_date;
+  var time_to_go    = moment.range(today, end_date);
+
+  var weeks   = time_to_go.diff('weeks');
+  var days    = time_to_go.diff('days') - (weeks * 7);
+  var hours   = time_to_go.diff('hours');
+  var minutes = time_to_go.diff('minutes');
+  var seconds = time_to_go.diff('seconds');
+
+  var dayString = "";
+  if(days > 1){
+    dayString = days + " days";
+  } else if(days === 1){
+    dayString = days + " day";
+  }
+
+
+  document.getElementById(time_container).innerHTML = weeks + " weeks " + dayString;
+  document.getElementById(description_container).innerHTML = description_string;
+}
+
+var refresh_rate = 600; // every n seconds
+refresh_rate_ms = 1000 * refresh_rate;
+setInterval(time_to_event, refresh_rate_ms);
+
+
+time_to_event(new Date("May 7, 2015"), 'event_one_time_to_go', 'event_one_description', 'until event x');
+time_to_event(new Date("April 1, 2015"), 'event_two_time_to_go', 'event_two_description', 'until event y');
+
+</script>
+
+</body>
+</html>
